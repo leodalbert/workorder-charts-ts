@@ -31,7 +31,15 @@ const network = () => {
       `${baseUrl}/${studioId}/api/items/site_group?fields=name,logo&filter[id]=${siteGroup}`
     );
   };
+  // get buildings in site_group
+  const getSiteGroupBuildings = (studioId: number, siteGroup: number) => {
+    // const config = { headers };
+    return axios.get(
+      `https://api.onuma.com/${studioId}/items/building?filter[site.site_group]=${siteGroup}&fields=id,name,number`
+    );
+  };
   return {
+    getSiteGroupBuildings,
     getAllWorkordersBySite,
     getSiteGroupInfo,
   };

@@ -1,30 +1,39 @@
-import produce from 'immer';
-import { GetSiteGroupInfo, GET_SITE_GROUP_INFO } from 'actions/types';
+import {
+  GetSiteGroupInfo,
+  GET_SITE_GROUP_INFO,
+  GET_SITE_GROUP_BUILDINGS,
+  GetSiteGroupBuildings,
+  SiteGroupBuildings,
+} from 'actions/types';
+import { Reducer } from 'redux';
 
-export const initialState = {
+export const initialState: SiteGroupState = {
   name: '',
   logo: '',
+  buildings: [],
 };
-interface SiteGroupState {
+export interface SiteGroupState {
   name: string;
   logo: string;
+  buildings: SiteGroupBuildings;
 }
 
-/* eslint-disable no-param-reassign */
-const workorder = (
+const workorder: Reducer<
+  SiteGroupState,
+  GetSiteGroupInfo | GetSiteGroupBuildings
+> = (
   state: SiteGroupState = initialState,
-  action: GetSiteGroupInfo
-) =>
-  produce(state, (draft) => {
-    const { payload, type } = action;
-    switch (type) {
-      case GET_SITE_GROUP_INFO:
-        draft.logo = payload.logo;
-        draft.name = payload.name;
-        break;
-      default:
-        break;
-    }
-  });
+  action: GetSiteGroupInfo | GetSiteGroupBuildings
+) => {
+  switch (action.type) {
+    case GET_SITE_GROUP_INFO:
+      const { name, logo } = action.payload;
+      return { ...state, name: name, logo: logo };
+    case GET_SITE_GROUP_BUILDINGS:
+      return { ...state, buildings: action.payload };
+    default:
+      return state;
+  }
+};
 
 export default workorder;

@@ -2,6 +2,7 @@ import { Action } from 'redux';
 
 export const GET_WORKORDERS_BY_SITE = 'GET_WORKORDERS_BY_SITE';
 export const GET_SITE_GROUP_INFO = 'GET_SITE_GROUP_INFO';
+export const GET_SITE_GROUP_BUILDINGS = 'GET_SITE_GROUP_BUILDINGS';
 export const SET_INNER_DOUGHNUT = 'SET_INNER_DOUGHNUT';
 export const SET_OUTER_DOUGHNUT = 'SET_OUTER_DOUGHNUT';
 export const SET_LOADING = 'SET_LOADING';
@@ -30,6 +31,14 @@ export interface SiteGroupInfo {
   logo: string;
 }
 
+export interface SiteGroupBuilding {
+  id: number;
+  number: string;
+  name: string;
+}
+
+export interface SiteGroupBuildings extends Array<SiteGroupBuilding> {}
+
 export interface GetWorkordersAction
   extends Action<typeof GET_WORKORDERS_BY_SITE> {
   payload: Workorder[];
@@ -37,6 +46,11 @@ export interface GetWorkordersAction
 
 export interface GetSiteGroupInfo extends Action<typeof GET_SITE_GROUP_INFO> {
   payload: SiteGroupInfo;
+}
+
+export interface GetSiteGroupBuildings
+  extends Action<typeof GET_SITE_GROUP_BUILDINGS> {
+  payload: SiteGroupBuildings;
 }
 
 export interface SetInnerDoughnut extends Action<typeof SET_INNER_DOUGHNUT> {
