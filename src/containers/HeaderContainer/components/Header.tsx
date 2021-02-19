@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
@@ -52,6 +52,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   name: string;
   logo: string;
+  getWorkordersBySite: (year: string) => void;
 }
 
 const renderYears = () => {
@@ -72,13 +73,17 @@ const last12 = `${dayjs()
   .subtract(1, 'year')
   .format('YYYY-MM-DD')} ${dayjs().format('YYYY-MM-DD')}`;
 
-const Header: React.FC<Props> = ({ name, logo }) => {
+const Header: React.FC<Props> = ({ name, logo, getWorkordersBySite }) => {
   const classes = useStyles();
   const [year, setYear] = useState(last12);
 
   const handleSelectRange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setYear(event.target.value as string);
   };
+
+  useEffect(() => {
+    getWorkordersBySite(year);
+  }, [year]);
 
   return (
     <AppBar position='fixed'>
