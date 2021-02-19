@@ -22,7 +22,7 @@ export interface Workorder {
   completed_date: string;
   request_type: string;
   assigned_trade: string;
-  assigned_priority: boolean;
+  assigned_priority: number;
 }
 
 export interface SiteGroupInfo {
