@@ -9,16 +9,16 @@ import { RootState } from 'reducers';
 import { AxiosResponse } from 'axios';
 
 // get name and logo of siteGroup
-export const getSiteGroupInfo = (): ThunkAction<
-  Promise<void>,
-  RootState,
-  undefined,
-  GetSiteGroupInfo
-> => async (dispatch) => {
+export const getSiteGroupInfo = (
+  studioId: number,
+  siteGroup: number
+): ThunkAction<Promise<void>, RootState, undefined, GetSiteGroupInfo> => async (
+  dispatch
+) => {
   try {
     const res: AxiosResponse<SiteGroupInfo[]> = await network.getSiteGroupInfo(
-      137,
-      10
+      studioId,
+      siteGroup
     );
     dispatch({
       type: GET_SITE_GROUP_INFO,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
+import { useParams, useHistory } from 'react-router-dom';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Typography,
@@ -52,7 +53,12 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   name: string;
   logo: string;
-  getWorkordersBySite: (year: string) => void;
+  getWorkordersBySite: (
+    year: string,
+    studioId: number,
+    siteGroup: number
+  ) => void;
+  getSiteGroupInfo: (studioId: number, siteGroup: number) => void;
 }
 
 const renderYears = () => {
@@ -73,8 +79,30 @@ const last12 = `${dayjs()
   .subtract(1, 'year')
   .format('YYYY-MM-DD')} ${dayjs().format('YYYY-MM-DD')}`;
 
-const Header: React.FC<Props> = ({ name, logo, getWorkordersBySite }) => {
+interface ParamTypes {
+  studioId: string;
+  siteGroup: string;
+}
+
+const Header: React.FC<Props> = ({
+  name,
+  logo,
+  getWorkordersBySite,
+  getSiteGroupInfo,
+}) => {
   const classes = useStyles();
+  const { studioId, siteGroup } = useParams<ParamTypes>();
+  const history = useHistory();
+  useEffect(() => {
+    if (!/^\d{1,3}$/.test(siteGroup) || !/^\d{1,3}$/.test(studioId)) {
+      history.push(`${process.env.PUBLIC_URL}/404`);
+    }
+  }, [studioId, siteGroup]);
+
+  useEffect(() => {
+    getSiteGroupInfo(parseInt(studioId), parseInt(siteGroup));
+  }, [studioId, siteGroup]);
+
   const [year, setYear] = useState(last12);
 
   const handleSelectRange = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -82,9 +110,10 @@ const Header: React.FC<Props> = ({ name, logo, getWorkordersBySite }) => {
   };
 
   useEffect(() => {
-    getWorkordersBySite(year);
+    if (studioId && siteGroup) {
+      getWorkordersBySite(year, parseInt(studioId), parseInt(siteGroup));
+    }
   }, [year]);
-
   return (
     <AppBar position='fixed'>
       <Toolbar classes={{ root: classes.navbarContainer }}>

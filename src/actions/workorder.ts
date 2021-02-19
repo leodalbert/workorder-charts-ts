@@ -12,7 +12,9 @@ import { AxiosResponse } from 'axios';
 
 // Get all wokrorders by site
 export const getWorkordersBySite = (
-  dateRange: string
+  dateRange: string,
+  studioId: number,
+  siteGroup: number
 ): ThunkAction<
   Promise<void>,
   RootState,
@@ -24,7 +26,12 @@ export const getWorkordersBySite = (
   try {
     const res: AxiosResponse<
       Workorder[]
-    > = await network.getAllWorkordersBySite(dates[0], dates[1]);
+    > = await network.getAllWorkordersBySite(
+      dates[0],
+      dates[1],
+      studioId,
+      siteGroup
+    );
     dispatch({
       type: GET_WORKORDERS_BY_SITE,
       payload: res.data,
