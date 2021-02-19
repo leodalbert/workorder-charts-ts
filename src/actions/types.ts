@@ -12,8 +12,8 @@ export enum DonughtFilterEnum {
 }
 
 export interface SetFilterEvent {
-  value: string;
-  name: DonughtFilterEnum;
+  value: string | unknown;
+  name?: DonughtFilterEnum | string | undefined;
 }
 
 export interface Workorder {

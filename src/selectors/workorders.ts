@@ -16,7 +16,7 @@ interface RequestTypes {
   [key: string]: string;
 }
 
-interface DataItem {
+export interface DataItem {
   label: string;
   data: number[];
   backgroundColor: string;
@@ -89,11 +89,18 @@ export const makeTradeTypeData = createSelector(
   }
 );
 
+export interface WeeklyData {
+  allWeeklyWorkorders: number[];
+  weeklyPmWorkorders: number[];
+  weeklyOpenWorkorders: number[];
+  weeklyCompletedWorkorders: number[];
+}
+
 // number of workorders per week
 export const makeWorkordersWeeklyData = createSelector(
   selectWorkorders,
   (workorders) => {
-    const data = {
+    const data: WeeklyData = {
       allWeeklyWorkorders: [...Array(52).fill(0)],
       weeklyPmWorkorders: [...Array(52).fill(0)],
       weeklyOpenWorkorders: [...Array(52).fill(0)],

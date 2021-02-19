@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Paper, Tabs, Tab, Box, Theme } from '@material-ui/core';
-// import AssgDept from 'containers/Charts/AssgDeptContainer';
-// import CompletionTime from 'containers/Charts/CompletionTimeContainer';
-// import TradeType from 'containers/Charts/TradeTypeContainer';
-// import WeeklyLine from 'containers/Charts/WeeklyLineContainer';
+import AssgDept from 'containers/Charts/AssgDeptContainer';
+import CompletionTime from 'containers/Charts/CompletionTimeContainer';
+import TradeType from 'containers/Charts/TradeTypeContainer';
+import WeeklyLine from 'containers/Charts/WeeklyLineContainer';
 import Spinner from 'components/Common/Spinner';
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -77,24 +77,16 @@ const Dashboard: React.FC<Props> = ({ loading }) => {
         </Tabs>
       </Paper>
       <TabPanel value={value} index={0}>
-        {
-          // <AssgDept />
-        }
+        <AssgDept />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        {
-          // <TradeType />
-        }
+        <TradeType />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        {
-          // <CompletionTime />
-        }
+        <CompletionTime />
       </TabPanel>
       <TabPanel value={value} index={3}>
-        {
-          // <WeeklyLine />
-        }
+        <WeeklyLine />
       </TabPanel>
     </Fragment>
   );
