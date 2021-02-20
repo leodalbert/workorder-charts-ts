@@ -91,7 +91,6 @@ const CompletionTime: React.FC<Props> = ({
   const classes = useStyles();
 
   const handleChange = (event: React.ChangeEvent<SetFilterEvent>) => {
-    console.log(event);
     setDoughnutFilter(event.target);
   };
 

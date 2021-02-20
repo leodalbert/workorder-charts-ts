@@ -8,8 +8,11 @@ import {
   AppBar,
   Select,
   MenuItem,
+  FormControl,
+  InputLabel,
 } from '@material-ui/core';
 import bimGenieLogo from 'assets/BIM_GENIE_GREEN_100p.jpg';
+import { SiteGroupBuildings } from 'actions/types';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -25,10 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
-    maxWidth: 330,
   },
-
   navbarContainer: {
     backgroundColor: theme.palette.common.white,
     display: 'flex',
@@ -53,12 +53,14 @@ const useStyles = makeStyles((theme: Theme) => ({
 interface Props {
   name: string;
   logo: string;
+  buildings: SiteGroupBuildings;
   getWorkordersBySite: (
     year: string,
     studioId: number,
     siteGroup: number
   ) => void;
   getSiteGroupInfo: (studioId: number, siteGroup: number) => void;
+  setBuildingFilter: (filter: string) => void;
 }
 
 const renderYears = () => {
@@ -70,6 +72,17 @@ const renderYears = () => {
     <MenuItem key={year} value={`${year}-01-01 ${year + 1}-01-01`}>
       <Typography component='h6' variant='h6'>
         {`Display data from: ${year}`}
+      </Typography>
+    </MenuItem>
+  ));
+};
+const renderBuildings = (buildings: SiteGroupBuildings) => {
+  return buildings.map((building) => (
+    <MenuItem key={building.id} value={JSON.stringify(building.id)}>
+      <Typography variant='subtitle1'>
+        {`${building.number && building.number + ' '}${
+          building.number && building.name && '- '
+        }${building.name && building.name}`}
       </Typography>
     </MenuItem>
   ));
@@ -87,26 +100,42 @@ interface ParamTypes {
 const Header: React.FC<Props> = ({
   name,
   logo,
+  buildings,
   getWorkordersBySite,
   getSiteGroupInfo,
+  setBuildingFilter,
 }) => {
   const classes = useStyles();
   const { studioId, siteGroup } = useParams<ParamTypes>();
   const history = useHistory();
+
+  // local state
+  const [year, setYear] = useState(last12);
+  const [filter, setFilter] = useState('');
+
+  // redirect on invalid url params
   useEffect(() => {
     if (!/^\d{1,3}$/.test(siteGroup) || !/^\d{1,3}$/.test(studioId)) {
       history.push(`${process.env.PUBLIC_URL}/404`);
     }
   }, [studioId, siteGroup]);
 
+  // get workorders by year
   useEffect(() => {
     getSiteGroupInfo(parseInt(studioId), parseInt(siteGroup));
   }, [studioId, siteGroup]);
 
-  const [year, setYear] = useState(last12);
+  // set building filter
+  useEffect(() => {
+    if (filter) setBuildingFilter(filter);
+  }, [filter]);
 
   const handleSelectRange = (event: React.ChangeEvent<{ value: unknown }>) => {
     setYear(event.target.value as string);
+  };
+
+  const handleSelectFilter = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setFilter(event.target.value as string);
   };
 
   useEffect(() => {
@@ -136,20 +165,44 @@ const Header: React.FC<Props> = ({
           )}
         </div>
         <div className={classes.selectCtnr}>
-          <Select
-            color='primary'
-            variant='outlined'
-            labelId='year-select-label'
-            id='year-select'
-            value={year}
-            onChange={handleSelectRange}>
-            <MenuItem value={last12}>
-              <Typography component='h6' variant='h6'>
-                Display data from: Past 12 months
-              </Typography>
-            </MenuItem>
-            {renderYears()}
-          </Select>
+          <FormControl style={{ minWidth: 300 }}>
+            <Select
+              color='primary'
+              variant='outlined'
+              labelId='year-select-label'
+              id='year-select'
+              value={year}
+              onChange={handleSelectRange}>
+              <MenuItem value={last12}>
+                <Typography component='h6' variant='h6'>
+                  Display data from: Past 12 months
+                </Typography>
+              </MenuItem>
+              {renderYears()}
+            </Select>
+          </FormControl>
+          <FormControl style={{ minWidth: 300, marginLeft: 20 }}>
+            <InputLabel
+              id='building-filter-select-label'
+              style={{ color: 'black' }}>
+              Filter by building
+            </InputLabel>
+            <Select
+              color='primary'
+              variant='standard'
+              labelId='year-select-label'
+              label='Filter by building'
+              id='year-select'
+              value={filter}
+              onChange={handleSelectFilter}>
+              <MenuItem value={'none'}>
+                <Typography component='h6' variant='h6'>
+                  All
+                </Typography>
+              </MenuItem>
+              {renderBuildings(buildings)}
+            </Select>
+          </FormControl>
         </div>
         <div className={classes.bimLogo}>
           <img

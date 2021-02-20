@@ -21,7 +21,7 @@ const network = () => {
   ) => {
     // const config = { headers };
     return axios.get(
-      `https://api.onuma.com/${studioId}/items/workorder?limit=5000&sort=request_date&fields=request_date,assigned_date,completed_date,request_type,assigned_trade,assigned_priority&filter[building.site.site_group][eq]=${siteGroup}&filter[request_date][between]=${startDate},${endDate}`
+      `https://api.onuma.com/${studioId}/items/workorder?limit=5000&sort=request_date&fields=request_date,assigned_date,completed_date,request_type,assigned_trade,assigned_priority,building.id&filter[building.site.site_group][eq]=${siteGroup}&filter[request_date][between]=${startDate},${endDate}`
     );
   };
   // get site_group info

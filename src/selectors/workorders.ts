@@ -3,7 +3,11 @@ import dayjs from 'dayjs';
 import weekOfYear from 'dayjs/plugin/weekOfYear';
 
 import { createSelector } from 'reselect';
-import { selectDoughnut1Filter, selectDoughnut2Filter } from './filter';
+import {
+  selectDoughnut1Filter,
+  selectDoughnut2Filter,
+  buildingFilter,
+} from './filter';
 import { colorSelector } from 'utils/HelperFunctions';
 import { RootState } from 'reducers';
 dayjs.extend(weekOfYear);
@@ -29,9 +33,20 @@ export const selectState = (state: RootState) =>
 export const selectWorkorders = (state: RootState) =>
   selectState(state).workorders;
 
+export const makeFilteredWorkorders = createSelector(
+  [selectWorkorders, buildingFilter],
+  (workorders, filter) => {
+    return !(filter === 'none')
+      ? workorders.filter(
+          (workorder) => workorder.building.id === parseInt(filter)
+        )
+      : workorders;
+  }
+);
+
 // number of workorders by assigned_department by month
 export const makeAssignedDepartmentData = createSelector(
-  selectWorkorders,
+  makeFilteredWorkorders,
   (workorders) => {
     const data: DataItem[] = [];
     const tempData: TempData = {};
@@ -61,7 +76,7 @@ export const makeAssignedDepartmentData = createSelector(
 
 // number of workorders by trade_type by month
 export const makeTradeTypeData = createSelector(
-  selectWorkorders,
+  makeFilteredWorkorders,
   (workorders) => {
     const data: DataItem[] = [];
     const tempData: TempData = {};
@@ -98,7 +113,7 @@ export interface WeeklyData {
 
 // number of workorders per week
 export const makeWorkordersWeeklyData = createSelector(
-  selectWorkorders,
+  makeFilteredWorkorders,
   (workorders) => {
     const data: WeeklyData = {
       allWeeklyWorkorders: [...Array(52).fill(0)],
@@ -124,7 +139,7 @@ export const makeWorkordersWeeklyData = createSelector(
 
 // Weekly workorder data
 export const makeWorkordersWeeklyPmData = createSelector(
-  selectWorkorders,
+  makeFilteredWorkorders,
   (workorders) => {
     const data: number[] = [...Array(52).fill(0)];
     workorders.forEach((workorder) => {
@@ -137,7 +152,7 @@ export const makeWorkordersWeeklyPmData = createSelector(
 
 // all request_types in list of workorders
 export const makeSelectAllRequestTypes = createSelector(
-  selectWorkorders,
+  makeFilteredWorkorders,
   (workorders) => {
     const data: RequestTypes = {};
     workorders.forEach((workorder) => {
@@ -151,7 +166,7 @@ export const makeSelectAllRequestTypes = createSelector(
 
 // workorders by how long they take to complete for doughnut 1
 export const makeWorkorderCompletionTimeData1 = createSelector(
-  [selectWorkorders, selectDoughnut1Filter],
+  [makeFilteredWorkorders, selectDoughnut1Filter],
   (workorders, filter) => {
     const data = [0, 0, 0];
     workorders
@@ -198,7 +213,7 @@ export const makeWorkorderCompletionTimeData1 = createSelector(
 );
 // workorders by how long they take to complete for doughnut 1
 export const makeWorkorderCompletionTimeData2 = createSelector(
-  [selectWorkorders, selectDoughnut2Filter],
+  [makeFilteredWorkorders, selectDoughnut2Filter],
   (workorders, filter) => {
     const data = [0, 0, 0];
     workorders

@@ -5,6 +5,7 @@ export const GET_SITE_GROUP_INFO = 'GET_SITE_GROUP_INFO';
 export const GET_SITE_GROUP_BUILDINGS = 'GET_SITE_GROUP_BUILDINGS';
 export const SET_INNER_DOUGHNUT = 'SET_INNER_DOUGHNUT';
 export const SET_OUTER_DOUGHNUT = 'SET_OUTER_DOUGHNUT';
+export const SET_BUILDING_FILTER = 'SET_BUILDING_FILTER';
 export const SET_LOADING = 'SET_LOADING';
 
 export enum DonughtFilterEnum {
@@ -17,6 +18,14 @@ export interface SetFilterEvent {
   name?: DonughtFilterEnum | string | undefined;
 }
 
+// export interface SetBuildingFilterEvent {
+//   value: string | unknown;
+// }
+
+interface buildingId {
+  id: number;
+}
+
 export interface Workorder {
   request_date: string;
   assigned_date: string;
@@ -24,6 +33,7 @@ export interface Workorder {
   request_type: string;
   assigned_trade: string;
   assigned_priority: number;
+  building: buildingId;
 }
 
 export interface SiteGroupInfo {
@@ -58,6 +68,10 @@ export interface SetInnerDoughnut extends Action<typeof SET_INNER_DOUGHNUT> {
 }
 
 export interface SetOuterDoughnut extends Action<typeof SET_OUTER_DOUGHNUT> {
+  payload: string;
+}
+
+export interface SetBuildingFilter extends Action<typeof SET_BUILDING_FILTER> {
   payload: string;
 }
 
