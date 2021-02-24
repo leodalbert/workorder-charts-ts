@@ -43,6 +43,7 @@ const options = {
         ticks: {
           beginAtZero: true,
         },
+        // type: 'logarithmic',
       },
     ],
   },
@@ -53,6 +54,7 @@ interface Props {
 }
 
 const AssgDept: React.FC<Props> = ({ assignedDepartmentData }) => {
+  console.log(assignedDepartmentData);
   const classes = useStyles();
   return (
     <div className={classes.root}>

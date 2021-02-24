@@ -43,6 +43,7 @@ const options = {
         ticks: {
           beginAtZero: true,
         },
+        // type: 'logarithmic',
       },
     ],
   },
