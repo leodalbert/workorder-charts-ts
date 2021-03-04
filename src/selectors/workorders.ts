@@ -54,27 +54,27 @@ export const makeAssignedDepartmentData = createSelector(
       let assignedTrade = workorder.assigned_trade;
       if (!assignedTrade) assignedTrade = 'not specified';
       const month: number = parseInt(workorder.request_date.split('-')[1]) - 1;
-      if (tempData[assignedTrade.toLowerCase()]) {
-        tempData[assignedTrade.toLowerCase()][month]
-          ? (tempData[assignedTrade.toLowerCase()][month] += 1)
-          : (tempData[assignedTrade.toLowerCase()][month] = 1);
+      if (tempData[assignedTrade]) {
+        tempData[assignedTrade][month]
+          ? (tempData[assignedTrade][month] += 1)
+          : (tempData[assignedTrade][month] = 1);
       } else {
-        tempData[assignedTrade.toLowerCase()] = [];
-        tempData[assignedTrade.toLowerCase()][month] = 1;
+        tempData[assignedTrade] = [];
+        tempData[assignedTrade][month] = 1;
       }
     });
     let i = 0;
     for (let d in tempData) {
       if (tempData[d].reduce((acc, val) => acc + val) > 2) {
         data.push({
-          label: d[0].toUpperCase() + d.slice(1),
+          label: d,
           data: tempData[d],
           backgroundColor: colorSelector(i),
         });
       }
       i++;
     }
-    return data;
+    return data.sort((a, b) => (a.label > b.label ? 1 : -1));
   }
 );
 
@@ -88,13 +88,13 @@ export const makeTradeTypeData = createSelector(
       let requestType = workorder.request_type;
       if (!requestType) requestType = 'not specified';
       const month = parseInt(workorder.request_date.split('-')[1]) - 1;
-      if (tempData[requestType.toLowerCase()]) {
-        tempData[requestType.toLowerCase()][month]
-          ? (tempData[requestType.toLowerCase()][month] += 1)
-          : (tempData[requestType.toLowerCase()][month] = 1);
+      if (tempData[requestType]) {
+        tempData[requestType][month]
+          ? (tempData[requestType][month] += 1)
+          : (tempData[requestType][month] = 1);
       } else {
-        tempData[requestType.toLowerCase()] = [];
-        tempData[requestType.toLowerCase()][month] = 1;
+        tempData[requestType] = [];
+        tempData[requestType][month] = 1;
       }
     });
     let i = 0;
@@ -102,14 +102,14 @@ export const makeTradeTypeData = createSelector(
       // only use data if there are more than 2 entries for dataset
       if (tempData[d].reduce((acc, val) => acc + val) > 2) {
         data.push({
-          label: d[0].toUpperCase() + d.slice(1),
+          label: d,
           data: tempData[d],
           backgroundColor: colorSelector(i),
         });
       }
       i++;
     }
-    return data.sort((a, b) => (a.label > b.label ? -1 : 1));
+    return data.sort((a, b) => (a.label > b.label ? 1 : -1));
   }
 );
 
