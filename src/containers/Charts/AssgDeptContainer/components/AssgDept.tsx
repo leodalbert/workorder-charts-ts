@@ -40,10 +40,16 @@ const options = {
   scales: {
     yAxes: [
       {
+        stacked: true,
         ticks: {
           beginAtZero: true,
         },
         // type: 'logarithmic',
+      },
+    ],
+    xAxes: [
+      {
+        stacked: true,
       },
     ],
   },
@@ -54,7 +60,6 @@ interface Props {
 }
 
 const AssgDept: React.FC<Props> = ({ assignedDepartmentData }) => {
-  console.log(assignedDepartmentData);
   const classes = useStyles();
   return (
     <div className={classes.root}>

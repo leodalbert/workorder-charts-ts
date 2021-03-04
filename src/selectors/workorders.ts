@@ -51,23 +51,27 @@ export const makeAssignedDepartmentData = createSelector(
     const data: DataItem[] = [];
     const tempData: TempData = {};
     workorders.forEach((workorder) => {
+      let assignedTrade = workorder.assigned_trade;
+      if (!assignedTrade) assignedTrade = 'not specified';
       const month: number = parseInt(workorder.request_date.split('-')[1]) - 1;
-      if (tempData[workorder.assigned_trade]) {
-        tempData[workorder.assigned_trade][month]
-          ? (tempData[workorder.assigned_trade][month] += 1)
-          : (tempData[workorder.assigned_trade][month] = 1);
+      if (tempData[assignedTrade.toLowerCase()]) {
+        tempData[assignedTrade.toLowerCase()][month]
+          ? (tempData[assignedTrade.toLowerCase()][month] += 1)
+          : (tempData[assignedTrade.toLowerCase()][month] = 1);
       } else {
-        tempData[workorder.assigned_trade] = [];
-        tempData[workorder.assigned_trade][month] = 1;
+        tempData[assignedTrade.toLowerCase()] = [];
+        tempData[assignedTrade.toLowerCase()][month] = 1;
       }
     });
     let i = 0;
     for (let d in tempData) {
-      data.push({
-        label: d ? d : 'not specified',
-        data: tempData[d],
-        backgroundColor: colorSelector(i),
-      });
+      if (tempData[d].reduce((acc, val) => acc + val) > 2) {
+        data.push({
+          label: d[0].toUpperCase() + d.slice(1),
+          data: tempData[d],
+          backgroundColor: colorSelector(i),
+        });
+      }
       i++;
     }
     return data;
@@ -81,23 +85,28 @@ export const makeTradeTypeData = createSelector(
     const data: DataItem[] = [];
     const tempData: TempData = {};
     workorders.forEach((workorder) => {
+      let requestType = workorder.request_type;
+      if (!requestType) requestType = 'not specified';
       const month = parseInt(workorder.request_date.split('-')[1]) - 1;
-      if (tempData[workorder.request_type]) {
-        tempData[workorder.request_type][month]
-          ? (tempData[workorder.request_type][month] += 1)
-          : (tempData[workorder.request_type][month] = 1);
+      if (tempData[requestType.toLowerCase()]) {
+        tempData[requestType.toLowerCase()][month]
+          ? (tempData[requestType.toLowerCase()][month] += 1)
+          : (tempData[requestType.toLowerCase()][month] = 1);
       } else {
-        tempData[workorder.request_type] = [];
-        tempData[workorder.request_type][month] = 1;
+        tempData[requestType.toLowerCase()] = [];
+        tempData[requestType.toLowerCase()][month] = 1;
       }
     });
     let i = 0;
     for (let d in tempData) {
-      data.push({
-        label: d ? d : 'not specified',
-        data: tempData[d],
-        backgroundColor: colorSelector(i),
-      });
+      // only use data if there are more than 2 entries for dataset
+      if (tempData[d].reduce((acc, val) => acc + val) > 2) {
+        data.push({
+          label: d[0].toUpperCase() + d.slice(1),
+          data: tempData[d],
+          backgroundColor: colorSelector(i),
+        });
+      }
       i++;
     }
     return data;

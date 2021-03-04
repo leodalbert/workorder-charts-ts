@@ -40,10 +40,17 @@ const options = {
   scales: {
     yAxes: [
       {
+        stacked: true,
+
         ticks: {
           beginAtZero: true,
         },
         // type: 'logarithmic',
+      },
+    ],
+    xAxes: [
+      {
+        stacked: true,
       },
     ],
   },
