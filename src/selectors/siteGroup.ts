@@ -13,5 +13,6 @@ export const selectBuildings = (state: RootState) =>
 export const makeSortedSelectBuildings = createSelector(
   selectBuildings,
   (buildings) =>
+    buildings &&
     buildings.sort((a, b) => parseInt(a.number) - parseInt(b.number))
 );

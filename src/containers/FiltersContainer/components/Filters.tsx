@@ -78,18 +78,21 @@ const Filters: React.FC<Props> = ({
   };
 
   const renderBuildings = () => {
-    return buildings.map((building) => {
-      const buildingStr = buildingString(building);
-      return (
-        <MenuItem
-          key={building.id}
-          onClick={() =>
-            handleSelectFilter([JSON.stringify(building.id), buildingStr])
-          }>
-          <Typography variant='subtitle1'>{buildingStr}</Typography>
-        </MenuItem>
-      );
-    });
+    return (
+      buildings &&
+      buildings.map((building) => {
+        const buildingStr = buildingString(building);
+        return (
+          <MenuItem
+            key={building.id}
+            onClick={() =>
+              handleSelectFilter([JSON.stringify(building.id), buildingStr])
+            }>
+            <Typography variant='subtitle1'>{buildingStr}</Typography>
+          </MenuItem>
+        );
+      })
+    );
   };
 
   // redirect on invalid url params
@@ -101,7 +104,9 @@ const Filters: React.FC<Props> = ({
 
   // get site group info
   useEffect(() => {
-    getSiteGroupInfo(parseInt(studioId), parseInt(siteGroup));
+    if (studioId && siteGroup) {
+      getSiteGroupInfo(parseInt(studioId), parseInt(siteGroup));
+    }
   }, [studioId, siteGroup]);
 
   // set building filter

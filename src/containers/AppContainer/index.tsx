@@ -39,9 +39,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-{
-  /* <PrivateRoute isAuth={false} redirectPath="/login" path="/t1">
-  <Pages.Profile /> your`s protected page
-</PrivateRoute> */
-}
