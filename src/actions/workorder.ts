@@ -5,6 +5,8 @@ import {
   SetLoading,
   SET_LOADING,
   Workorder,
+  SET_NOT_AUTHORIZED,
+  SetNotAuthorized,
 } from 'actions/types';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from 'reducers';
@@ -19,7 +21,7 @@ export const getWorkordersBySite = (
   Promise<void>,
   RootState,
   undefined,
-  GetWorkordersAction | SetLoading
+  GetWorkordersAction | SetLoading | SetNotAuthorized
 > => async (dispatch) => {
   const dates = dateRange.split(' ');
   dispatch({ type: SET_LOADING });
@@ -38,6 +40,8 @@ export const getWorkordersBySite = (
       payload: res.data,
     });
   } catch (err) {
-    console.error(err);
+    dispatch({
+      type: SET_NOT_AUTHORIZED,
+    });
   }
 };

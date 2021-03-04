@@ -6,6 +6,8 @@ import {
   SiteGroupInfo,
   GetSiteGroupBuildings,
   SiteGroupBuildings,
+  SetNotAuthorized,
+  SET_NOT_AUTHORIZED,
 } from 'actions/types';
 import { ThunkAction } from 'redux-thunk';
 import { RootState } from 'reducers';
@@ -19,7 +21,7 @@ export const getSiteGroupBuildings = (
   Promise<void>,
   RootState,
   undefined,
-  GetSiteGroupBuildings
+  GetSiteGroupBuildings | SetNotAuthorized
 > => async (dispatch) => {
   try {
     const res: AxiosResponse<SiteGroupBuildings> = await network.getSiteGroupBuildings(
@@ -31,7 +33,9 @@ export const getSiteGroupBuildings = (
       payload: res.data,
     });
   } catch (err) {
-    console.error(err);
+    dispatch({
+      type: SET_NOT_AUTHORIZED,
+    });
   }
 };
 
@@ -39,9 +43,12 @@ export const getSiteGroupBuildings = (
 export const getSiteGroupInfo = (
   studioId: number,
   siteGroup: number
-): ThunkAction<Promise<void>, RootState, undefined, GetSiteGroupInfo> => async (
-  dispatch
-) => {
+): ThunkAction<
+  Promise<void>,
+  RootState,
+  undefined,
+  GetSiteGroupInfo | SetNotAuthorized
+> => async (dispatch) => {
   dispatch(getSiteGroupBuildings(studioId, siteGroup));
   try {
     const res: AxiosResponse<SiteGroupInfo[]> = await network.getSiteGroupInfo(
@@ -53,6 +60,8 @@ export const getSiteGroupInfo = (
       payload: res.data[0],
     });
   } catch (err) {
-    console.error(err);
+    dispatch({
+      type: SET_NOT_AUTHORIZED,
+    });
   }
 };

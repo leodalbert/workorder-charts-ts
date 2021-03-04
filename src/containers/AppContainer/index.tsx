@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from 'containers/HeaderContainer';
 import Dashboard from 'DashboardContainer';
 import LogoutPage from 'components/Common/LogoutPage';
+import PrivateRoute from 'components/Common/PrivateRoute';
 
 //  Material Ui
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -19,12 +20,17 @@ const App: React.FC = () => {
           component={Header}
         />
         <Switch>
-          <Route
+          <PrivateRoute
             exact
             path={`${process.env.PUBLIC_URL}/:studioId/:siteGroup`}
             component={Dashboard}
           />
-          <Route exact path={`/logout`} component={LogoutPage} />
+
+          <Route
+            exact
+            path={`${process.env.PUBLIC_URL}/logout`}
+            component={LogoutPage}
+          />
           <Route path={`${process.env.PUBLIC_URL}/`} component={NotFound} />
         </Switch>
       </ThemeProvider>
@@ -33,3 +39,9 @@ const App: React.FC = () => {
 };
 
 export default App;
+
+{
+  /* <PrivateRoute isAuth={false} redirectPath="/login" path="/t1">
+  <Pages.Profile /> your`s protected page
+</PrivateRoute> */
+}

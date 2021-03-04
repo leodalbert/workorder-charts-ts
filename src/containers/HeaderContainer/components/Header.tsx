@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     widht: 65,
   },
   navbarTitleContainer: {
-    flex: 1,
+    // flex: 1,
     display: 'flex',
     justifyContent: 'flex-start',
     alignItems: 'center',

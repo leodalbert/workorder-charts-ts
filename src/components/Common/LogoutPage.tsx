@@ -7,11 +7,9 @@ const LogoutPage: React.FC = () => {
     <Fragment>
       <Container style={{ marginTop: 200, textAlign: 'center' }}>
         <Typography variant='subtitle1'>
-          <ErrorOutlineIcon /> Oops - something didn't work correctly! You were
-          logged out.
-        </Typography>
-        <Typography variant='body2'>
-          If this problem persists, plese contact us!
+          <ErrorOutlineIcon /> You don't have access to the charts of this
+          site/campus. Please use the chart button in your site/campus to access
+          the charts or contact Onuma to request access.
         </Typography>
       </Container>
     </Fragment>

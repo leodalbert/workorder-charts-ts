@@ -7,6 +7,7 @@ export const SET_INNER_DOUGHNUT = 'SET_INNER_DOUGHNUT';
 export const SET_OUTER_DOUGHNUT = 'SET_OUTER_DOUGHNUT';
 export const SET_BUILDING_FILTER = 'SET_BUILDING_FILTER';
 export const SET_LOADING = 'SET_LOADING';
+export const SET_NOT_AUTHORIZED = 'SET_NOT_AUTHORIZED';
 
 export enum DonughtFilterEnum {
   Outer = 'outer',
@@ -76,5 +77,8 @@ export interface SetBuildingFilter extends Action<typeof SET_BUILDING_FILTER> {
 }
 
 export interface SetLoading extends Action<typeof SET_LOADING> {
+  payload?: any;
+}
+export interface SetNotAuthorized extends Action<typeof SET_NOT_AUTHORIZED> {
   payload?: any;
 }

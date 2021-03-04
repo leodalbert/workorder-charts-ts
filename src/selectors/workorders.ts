@@ -109,7 +109,7 @@ export const makeTradeTypeData = createSelector(
       }
       i++;
     }
-    return data;
+    return data.sort((a, b) => (a.label > b.label ? -1 : 1));
   }
 );
 
