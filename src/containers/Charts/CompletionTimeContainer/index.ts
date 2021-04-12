@@ -4,6 +4,7 @@ import {
   makeWorkorderCompletionTimeData1,
   makeWorkorderCompletionTimeData2,
   makeSelectAllRequestTypes,
+  makeSelectAllTrades,
 } from 'selectors/workorders';
 import { selectDoughnut1Filter, selectDoughnut2Filter } from 'selectors/filter';
 import { setDoughnutFilter } from 'actions/filter';
@@ -13,6 +14,7 @@ const mapStateToProps = (state: RootState) => ({
   outerData: makeWorkorderCompletionTimeData1(state),
   innerData: makeWorkorderCompletionTimeData2(state),
   requestTypes: makeSelectAllRequestTypes(state),
+  tradeTypes: makeSelectAllTrades(state),
   outerFilter: selectDoughnut1Filter(state),
   innerFilter: selectDoughnut2Filter(state),
 });

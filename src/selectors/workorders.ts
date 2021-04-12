@@ -172,6 +172,26 @@ export const makeSelectAllRequestTypes = createSelector(
     return Object.keys(data);
   }
 );
+// all trades in list of workorders
+export const makeSelectAllTrades = createSelector(
+  makeFilteredWorkorders,
+  (workorders) => {
+    const data: RequestTypes = {};
+    workorders.forEach((workorder) => {
+      if (!data[workorder.assigned_trade]) {
+        if (
+          workorder.assigned_trade === '' ||
+          workorder.assigned_trade === 'null'
+        ) {
+          data['null'] = '';
+        } else {
+          data[workorder.assigned_trade] = '';
+        }
+      }
+    });
+    return Object.keys(data);
+  }
+);
 
 // workorders by how long they take to complete for doughnut 1
 export const makeWorkorderCompletionTimeData1 = createSelector(
@@ -191,7 +211,7 @@ export const makeWorkorderCompletionTimeData1 = createSelector(
             else return false;
             // else filter by request type
           } else {
-            if (workorder.request_type === filter) return true;
+            if (workorder.assigned_trade === filter) return true;
             else return false;
           }
         }
@@ -220,7 +240,7 @@ export const makeWorkorderCompletionTimeData1 = createSelector(
     return data;
   }
 );
-// workorders by how long they take to complete for doughnut 1
+// workorders by how long they take to complete for doughnut 2
 export const makeWorkorderCompletionTimeData2 = createSelector(
   [makeFilteredWorkorders, selectDoughnut2Filter],
   (workorders, filter) => {

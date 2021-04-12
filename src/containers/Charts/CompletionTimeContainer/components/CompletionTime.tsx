@@ -70,11 +70,19 @@ const renderRequestTypes = (requestTypes: string[]) => {
     </MenuItem>
   ));
 };
+const renderTradeTypes = (tradeTypes: string[]) => {
+  return tradeTypes.map((tradeType) => (
+    <MenuItem key={tradeType} value={tradeType}>
+      Trade: {tradeType === 'null' ? 'Not Specified' : tradeType}
+    </MenuItem>
+  ));
+};
 
 interface Props {
   outerData: number[];
   innerData: number[];
   requestTypes: string[];
+  tradeTypes: string[];
   outerFilter: string;
   innerFilter: string;
   setDoughnutFilter: (e: SetFilterEvent) => void;
@@ -86,6 +94,7 @@ const CompletionTime: React.FC<Props> = ({
   requestTypes,
   outerFilter,
   innerFilter,
+  tradeTypes,
   setDoughnutFilter,
 }) => {
   const classes = useStyles();
@@ -128,7 +137,7 @@ const CompletionTime: React.FC<Props> = ({
               value={outerFilter}
               onChange={handleChange}>
               <MenuItem value={'all'}>All Workorders</MenuItem>
-              {renderRequestTypes(requestTypes)}
+              {renderTradeTypes(tradeTypes)}
             </Select>
             <Typography style={{ marginTop: 20 }}>
               Total: {outerData[0] + outerData[1] + outerData[2]}
