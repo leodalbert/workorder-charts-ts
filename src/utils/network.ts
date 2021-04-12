@@ -35,7 +35,7 @@ const network = () => {
   const getSiteGroupBuildings = (studioId: number, siteGroup: number) => {
     // const config = { headers };
     return axios.get(
-      `https://system.onuma.com/${studioId}/api/items/building?filter[site.site_group]=${siteGroup}&fields=id,name,number`
+      `https://system.onuma.com/${studioId}/api/items/building?filter[site.site_group]=${siteGroup}&fields=id,name,number&filter[lazy_attribute.enable_workorders][>]=0`
     );
   };
   return {

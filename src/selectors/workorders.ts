@@ -52,7 +52,7 @@ export const makeAssignedDepartmentData = createSelector(
     const tempData: TempData = {};
     workorders.forEach((workorder) => {
       let assignedTrade = workorder.assigned_trade;
-      if (!assignedTrade) assignedTrade = 'not specified';
+      if (!assignedTrade) assignedTrade = 'Not specified';
       const month: number = parseInt(workorder.request_date.split('-')[1]) - 1;
       if (tempData[assignedTrade]) {
         tempData[assignedTrade][month]
