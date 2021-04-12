@@ -4,6 +4,7 @@ import { Paper, Tabs, Tab, Box, Theme } from '@material-ui/core';
 import AssgDept from 'containers/Charts/AssgDeptContainer';
 import CompletionTime from 'containers/Charts/CompletionTimeContainer';
 import TradeType from 'containers/Charts/TradeTypeContainer';
+import AverageCompletionTime from 'containers/Charts/AvgCompletionTimeContainer';
 import WeeklyLine from 'containers/Charts/WeeklyLineContainer';
 import Spinner from 'components/Common/Spinner';
 
@@ -70,9 +71,10 @@ const Dashboard: React.FC<Props> = ({ loading }) => {
           <Tab label='work orders by trade' {...a11yProps(0)} />
           <Tab label='Work orders by request type' {...a11yProps(1)} />
           <Tab label='Completion Time' {...a11yProps(2)} />
+          <Tab label='Avg Completion Time' {...a11yProps(3)} />
           <Tab
             label='Work orders with PM jobs / Open Vs Completed'
-            {...a11yProps(3)}
+            {...a11yProps(4)}
           />
         </Tabs>
       </Paper>
@@ -86,6 +88,9 @@ const Dashboard: React.FC<Props> = ({ loading }) => {
         <CompletionTime />
       </TabPanel>
       <TabPanel value={value} index={3}>
+        <AverageCompletionTime />
+      </TabPanel>
+      <TabPanel value={value} index={4}>
         <WeeklyLine />
       </TabPanel>
     </Fragment>

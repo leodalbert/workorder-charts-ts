@@ -15,6 +15,9 @@ dayjs.extend(weekOfYear);
 interface TempData {
   [key: string]: number[];
 }
+interface TempData2 {
+  [key: string]: { [key: number]: number[] };
+}
 
 interface RequestTypes {
   [key: string]: string;
@@ -72,6 +75,59 @@ export const makeAssignedDepartmentData = createSelector(
           backgroundColor: colorSelector(i),
         });
       }
+      i++;
+    }
+    return data.sort((a, b) => (a.label > b.label ? 1 : -1));
+  }
+);
+// number avg completion time by assignedTrade by month
+export const makeAverageTimeByTrade = createSelector(
+  makeFilteredWorkorders,
+  (workorders) => {
+    const data: DataItem[] = [];
+    const tempData2: TempData2 = {};
+    workorders
+      .filter(
+        (workorder) =>
+          workorder.completed_date &&
+          workorder.request_date &&
+          dayjs(workorder.completed_date).diff(workorder.request_date, 'day') <
+            50 &&
+          dayjs(workorder.completed_date).diff(workorder.request_date, 'day') >
+            -1
+      )
+      .forEach((workorder) => {
+        const completionTime = dayjs(workorder.completed_date).diff(
+          workorder.request_date,
+          'day'
+        );
+        let assignedTrade = workorder.assigned_trade;
+        if (!assignedTrade) assignedTrade = 'Not specified';
+        const month2: number =
+          parseInt(workorder.request_date.split('-')[1]) - 1;
+        if (tempData2[assignedTrade]) {
+          tempData2[assignedTrade][month2]
+            ? tempData2[assignedTrade][month2].push(completionTime)
+            : (tempData2[assignedTrade][month2] = [completionTime]);
+        } else {
+          tempData2[assignedTrade] = [];
+          tempData2[assignedTrade][month2] = [completionTime];
+        }
+      });
+
+    let i = 0;
+    for (let d in tempData2) {
+      const arr: number[] = [];
+      Object.entries(tempData2[d]).forEach(([key, list]) => {
+        let index = parseInt(key);
+        const ave = list.reduce((acc, val) => acc + val) / list.length;
+        arr[index] = Math.round(ave) + 1;
+      });
+      data.push({
+        label: d,
+        data: arr,
+        backgroundColor: colorSelector(i + 2),
+      });
       i++;
     }
     return data.sort((a, b) => (a.label > b.label ? 1 : -1));
