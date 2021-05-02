@@ -58,7 +58,7 @@ const Filters: React.FC<Props> = ({
 
   const renderYears = () => {
     const years = [];
-    for (let y = dayjs().year() - 1; y > 2014; y--) {
+    for (let y = dayjs().year(); y > 2014; y--) {
       years.push(y);
     }
     return years.map((year) => (

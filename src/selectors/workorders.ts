@@ -187,6 +187,7 @@ export const makeWorkordersWeeklyData = createSelector(
       weeklyCompletedWorkorders: [...Array(52).fill(0)],
     };
     workorders.forEach((workorder) => {
+      // console.log(dayjs(workorder.request_date).week() - 1);
       data.allWeeklyWorkorders[dayjs(workorder.request_date).week() - 1]++;
       workorder.request_type === 'Preventive Maintenance' &&
         data.weeklyPmWorkorders[dayjs(workorder.request_date).week() - 1]++;
@@ -198,6 +199,13 @@ export const makeWorkordersWeeklyData = createSelector(
           dayjs(workorder.completed_date).week() - 1
         ]++;
     });
+    // Shifts week 0 to week 52
+    data.weeklyPmWorkorders.push(data.weeklyPmWorkorders.shift() || 0);
+    data.allWeeklyWorkorders.push(data.allWeeklyWorkorders.shift() || 0);
+    data.weeklyOpenWorkorders.push(data.weeklyOpenWorkorders.shift() || 0);
+    data.weeklyCompletedWorkorders.push(
+      data.weeklyCompletedWorkorders.shift() || 0
+    );
     return data;
   }
 );
