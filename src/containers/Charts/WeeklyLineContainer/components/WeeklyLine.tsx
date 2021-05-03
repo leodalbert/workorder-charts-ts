@@ -15,20 +15,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.text.primary,
-    // display: 'flex',
-    // verticalAlign: 'middle',
   },
 }));
 
 interface Props {
   weeklyData: WeeklyData;
 }
-const openPrintInPopup = () => {
-  window.open(
-    `http://week-number.net/calendar-with-week-numbers-2021.html`,
-    'window'
-  );
-};
 
 const WeeklyLine: React.FC<Props> = ({ weeklyData }) => {
   const classes = useStyles();
