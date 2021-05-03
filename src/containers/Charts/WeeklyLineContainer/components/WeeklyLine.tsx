@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Typography, Container, Theme } from '@material-ui/core';
+import { Typography, Container, Theme, Button, Link } from '@material-ui/core';
 import StackedArea from './StackedArea';
 import { colorSelector } from 'utils/HelperFunctions';
 import { WeeklyData } from 'selectors/workorders';
@@ -15,12 +15,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     marginBottom: theme.spacing(5),
     textAlign: 'center',
     color: theme.palette.text.primary,
+    // display: 'flex',
+    // verticalAlign: 'middle',
   },
 }));
 
 interface Props {
   weeklyData: WeeklyData;
 }
+const openPrintInPopup = () => {
+  window.open(
+    `http://week-number.net/calendar-with-week-numbers-2021.html`,
+    'window'
+  );
+};
 
 const WeeklyLine: React.FC<Props> = ({ weeklyData }) => {
   const classes = useStyles();
@@ -31,6 +39,16 @@ const WeeklyLine: React.FC<Props> = ({ weeklyData }) => {
           Weekly work orders with share of PM jobs / Weekly work orders opened
           and closed
         </Typography>
+        <div style={{ textAlign: 'right' }}>
+          <Link
+            target='_blank'
+            href='http://week-number.net/calendar-with-week-numbers-2021.html'
+            color='textSecondary'
+            variant='body2'
+            underline='always'>
+            Week Numbers
+          </Link>
+        </div>
       </Container>
       <Container>
         <StackedArea
